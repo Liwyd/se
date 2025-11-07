@@ -1,109 +1,80 @@
-# سیستم مدیریت کتابخانه دانشگاه
+# University Library Management System
 
-این پروژه یک سیستم مدیریت کتابخانه دانشگاه است که با استفاده از Node.js و JavaScript پیاده‌سازی شده است.
+This is a console-based University Library Management System implemented in Java.
 
-## ویژگی‌های سیستم
+## Features
 
-### نقش‌های کاربری
+### Roles
 
-1. **مهمان (Guest)**
-   - مشاهده تعداد دانشجویان ثبت نام کرده
-   - جستجوی کتاب بر اساس نام
-   - مشاهده اطلاعات آماری
+1. **Guest**
+   - View registered students count
+   - Search books by title
+   - View statistics
 
-2. **دانشجو (Student)**
-   - ثبت نام در سیستم
-   - ورود به سیستم
-   - جستجوی کتاب (عنوان، سال نشر، نویسنده)
-   - ثبت درخواست امانت
-   - مشاهده درخواست‌های امانت
+2. **Student**
+   - Register
+   - Login
+   - Search books (title, year, author, combined)
+   - Create borrow request
+   - View own borrow requests
 
-3. **کارمند کتابخانه (Employee)**
-   - ورود به سیستم
-   - تغییر رمز عبور
-   - ثبت اطلاعات کتاب
-   - جستجو و ویرایش کتاب
-   - بررسی و تایید درخواست‌های امانت
-   - مشاهده گزارش دانشجو
-   - فعال/غیرفعال کردن دانشجو
-   - دریافت کتاب
+3. **Employee**
+   - Login
+   - Change password
+   - Add book
+   - Search and edit book
+   - Review/approve/reject borrow requests
+   - View student report
+   - Toggle student active status
+   - Receive returned book
 
-4. **مدیر سیستم (Admin)**
-   - تعریف کارمند کتابخانه
-   - مشاهده عملکرد کارمند
-   - مشاهده آمار امانات
-   - مشاهده آمار دانشجویان
+4. **Admin**
+   - Add employee
+   - View employee performance
+   - View borrow statistics
+   - View student statistics
 
-## نصب و راه‌اندازی
+## Build and Run
 
-1. ابتدا Node.js را روی سیستم خود نصب کنید
-2. وابستگی‌های پروژه را نصب کنید:
-   ```bash
-   npm install
-   ```
+Prerequisites: Java 17+ and Maven.
 
-3. برنامه را اجرا کنید:
-   ```bash
-   npm start
-   ```
-
-## نحوه استفاده
-
-### ورود به عنوان مدیر
-- نام کاربری: `admin`
-- رمز عبور: `admin123`
-
-### ثبت نام دانشجو
-1. از منوی اصلی گزینه "ثبت نام دانشجو" را انتخاب کنید
-2. نام کاربری و رمز عبور خود را وارد کنید
-3. پس از ثبت نام موفق، می‌توانید وارد سیستم شوید
-
-### تعریف کارمند
-1. با حساب مدیر وارد شوید
-2. گزینه "تعریف کارمند" را انتخاب کنید
-3. نام کاربری و رمز عبور کارمند را وارد کنید
-
-### ثبت کتاب
-1. با حساب کارمند وارد شوید
-2. گزینه "ثبت اطلاعات کتاب" را انتخاب کنید
-3. اطلاعات کتاب را وارد کنید
-
-### درخواست امانت
-1. با حساب دانشجو وارد شوید
-2. گزینه "ثبت درخواست امانت" را انتخاب کنید
-3. شناسه کتاب و تاریخ‌های شروع و پایان را وارد کنید
-
-### تایید درخواست امانت
-1. با حساب کارمند وارد شوید
-2. گزینه "بررسی درخواست‌های امانت" را انتخاب کنید
-3. درخواست‌های قابل بررسی را مشاهده و تایید کنید
-
-## ساختار پروژه
-
-```
-├── index.js                 # فایل اصلی برنامه
-├── package.json             # فایل تنظیمات پروژه
-├── modules/                 # پوشه ماژول‌ها
-│   ├── StudentManager.js    # مدیریت دانشجویان
-│   ├── BookManager.js       # مدیریت کتاب‌ها
-│   ├── EmployeeManager.js   # مدیریت کارمندان
-│   ├── AdminManager.js      # مدیریت مدیر
-│   ├── GuestManager.js      # مدیریت مهمان
-│   └── BorrowManager.js     # مدیریت امانات
-└── README.md               # این فایل
+```bash
+mvn clean package
+mvn exec:java -Dexec.mainClass=com.university.library.LibraryManagementSystem
 ```
 
-## نکات مهم
+## Usage
 
-- این نسخه از سیستم، اطلاعات را در حافظه ذخیره می‌کند و پس از بستن برنامه، اطلاعات پاک می‌شود
-- برای استفاده دائمی، نیاز به پیاده‌سازی پایگاه داده است
-- سیستم از رابط خط فرمان (CLI) استفاده می‌کند
-- تمام متن‌ها به زبان فارسی هستند
+### Admin login
+- Username: `admin`
+- Password: `admin123`
 
-## توسعه آینده
+### Notes
+- Data is stored in memory; it resets when the app stops.
+- This is a CLI application.
 
-- پیاده‌سازی پایگاه داده
-- رابط کاربری گرافیکی
-- سیستم گزارش‌گیری پیشرفته
-- مدیریت دسته‌بندی کتاب‌ها
-- سیستم جریمه تاخیر
+## Project Structure
+
+```
+├── pom.xml
+└── src/
+    └── main/
+        └── java/
+            └── com/university/library/
+                ├── LibraryManagementSystem.java
+                └── modules/
+                    ├── AdminManager.java
+                    ├── BookManager.java
+                    ├── BorrowManager.java
+                    ├── EmployeeManager.java
+                    ├── GuestManager.java
+                    └── StudentManager.java
+```
+
+## Future Work
+
+- Add a database for persistence
+- GUI front-end
+- Advanced reporting
+- Book categories management
+- Late return penalty system
