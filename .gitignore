@@ -1,67 +1,54 @@
-# Node modules
-node_modules/
+# Compiled class file
+*.class
 
-# Logs
-logs/
+# Log file
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+logs/
 
-# Runtime data
-pids/
-*.pid
-*.seed
-*.pid.lock
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
 
-# Coverage
-coverage/
-*.lcov
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
 
-# Build output
-dist/
-build/
-out/
-.tmp/
-temp/
-
-# Environment variables
-.env
-.env.*
-!.env.example
-
-# IDE files
-.vscode/
+# IDE
 .idea/
-*.swp
-*.swo
+*.iws
+*.iml
+*.ipr
+.vscode/
+.settings/
+.classpath
+.project
+.factorypath
 
-# OS files
+# Spring Boot
+application-local.yml
+application-dev.yml
+
+# OS
 .DS_Store
 Thumbs.db
 
-# Dependency directories
-jspm_packages/
+# H2 Database
+*.mv.db
+*.trace.db
 
-# Optional npm cache directory
-.npm
-
-# TypeScript
-*.tsbuildinfo
-
-# Test output
-test-results/
-jest-cache/
-jest-html-reporters-*
-
-# Local serverless, firebase, vercel, etc.
-.serverless/
-.firebase/
-.vercel/
-.netlify/
-
-# Misc
-*.tgz
-*.bak
-*.orig
+# Environment variables
+.env
+.env.local
