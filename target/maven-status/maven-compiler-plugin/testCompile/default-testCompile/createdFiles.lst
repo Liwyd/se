@@ -1,0 +1,10 @@
+com/university/library/modules/AuthenticationServiceTest.class
+com/university/library/modules/AdminManagerTest.class
+com/university/library/modules/BorrowManagementTest.class
+com/university/library/modules/BorrowManagerTest.class
+com/university/library/modules/BookManagerTest.class
+com/university/library/modules/BookSearchServiceTest.class
+com/university/library/modules/ReportingServiceTest.class
+com/university/library/modules/EmployeeManagerTest.class
+com/university/library/modules/GuestManagerTest.class
+com/university/library/modules/StudentManagerTest.class

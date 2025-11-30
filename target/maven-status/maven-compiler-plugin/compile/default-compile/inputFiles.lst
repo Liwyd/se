@@ -1,0 +1,10 @@
+/home/ali/Desktop/se/src/main/java/com/university/library/modules/BorrowManager.java
+/home/ali/Desktop/se/src/main/java/com/university/library/modules/EmployeeManager.java
+/home/ali/Desktop/se/src/main/java/com/university/library/modules/AdminManager.java
+/home/ali/Desktop/se/src/main/java/com/university/library/LibraryManagementSystem.java
+/home/ali/Desktop/se/src/main/java/com/university/library/exceptions/BookNotAvailableException.java
+/home/ali/Desktop/se/src/main/java/com/university/library/exceptions/InvalidStudentStatusException.java
+/home/ali/Desktop/se/src/main/java/com/university/library/exceptions/InvalidRequestStatusException.java
+/home/ali/Desktop/se/src/main/java/com/university/library/modules/GuestManager.java
+/home/ali/Desktop/se/src/main/java/com/university/library/modules/StudentManager.java
+/home/ali/Desktop/se/src/main/java/com/university/library/modules/BookManager.java

@@ -26,7 +26,7 @@ public class StudentManager {
         System.out.println("\n--- Student Registration ---");
         System.out.print("Username: ");
         String username = scanner.nextLine().trim();
-        if (students.stream().anyMatch(s -> s.username.equals(username))) {
+        if (students.stream().anyMatch(s -> s.username().equals(username))) {
             System.out.println("This username is already taken!");
             return null;
         }
@@ -46,7 +46,7 @@ public class StudentManager {
 
     public Student login(String username, String password) {
         return students.stream()
-                .filter(s -> s.username.equals(username) && s.password.equals(password) && s.isActive)
+                .filter(s -> s.username().equals(username) && s.password().equals(password) && s.isActive())
                 .findFirst().orElse(null);
     }
 
@@ -130,7 +130,7 @@ public class StudentManager {
 
         var cu = currentUserSupplier.get();
         if (!(cu instanceof Student s)) { System.out.println("Not authenticated as student."); return; }
-        var req = borrowManager.createBorrowRequest(s.id, book.id(), startDate, endDate);
+        var req = borrowManager.createBorrowRequest(s.id(), book.id(), startDate, endDate);
         if (req != null) {
             System.out.println("Borrow request submitted successfully!");
         } else {
@@ -142,7 +142,7 @@ public class StudentManager {
         System.out.println("\n--- Your Borrow Requests ---");
         var cu = currentUserSupplier.get();
         if (!(cu instanceof Student s)) { System.out.println("Not authenticated as student."); return; }
-        var requests = borrowManager.getStudentRequests(s.id);
+        var requests = borrowManager.getStudentRequests(s.id());
         if (requests.isEmpty()) {
             System.out.println("You have no borrow requests.");
             return;
@@ -157,18 +157,23 @@ public class StudentManager {
         }
     }
 
-    public Student getStudentById(int id) { return students.stream().filter(s -> s.id == id).findFirst().orElse(null); }
+    public Student getStudentById(int id) { return students.stream().filter(s -> s.id() == id).findFirst().orElse(null); }
     public List<Student> getAllStudents() { return students; }
-    public List<Student> getActiveStudents() { return students.stream().filter(s -> s.isActive).toList(); }
+    public List<Student> getActiveStudents() { return students.stream().filter(Student::isActive).toList(); }
 
     public Boolean toggleStudentStatus(int studentId) {
         Student s = getStudentById(studentId);
         if (s == null) return null;
-        s.isActive = !s.isActive;
-        return s.isActive;
+        // Create new Student with toggled isActive status and replace in list
+        Student updatedStudent = new Student(s.id(), s.username(), s.password(), !s.isActive(), s.registrationDate());
+        int index = students.indexOf(s);
+        if (index >= 0) {
+            students.set(index, updatedStudent);
+        }
+        return updatedStudent.isActive();
     }
 
-    public String getCurrentUsername(Object student) { return student instanceof Student s ? s.username : ""; }
+    public String getCurrentUsername(Object student) { return student instanceof Student s ? s.username() : ""; }
 
     public record Student(int id, String username, String password, boolean isActive, LocalDate registrationDate) {}
 }

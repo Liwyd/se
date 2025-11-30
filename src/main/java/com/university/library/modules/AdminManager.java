@@ -102,7 +102,7 @@ public class AdminManager {
         List<DelayItem> delayItems = new ArrayList<>();
         for (var s : allStudents) {
             var history = borrowManager.getStudentHistory(s.id());
-            int delays = (int) history.stream().filter(BorrowRecord::isDelayed).count();
+            int delays = (int) history.stream().filter(BorrowManager.BorrowRecordView::isDelayed).count();
             if (delays > 0) {
                 delayItems.add(new DelayItem(s.username(), delays));
             }
@@ -124,7 +124,7 @@ public class AdminManager {
         for (var s : allStudents) {
             var history = borrowManager.getStudentHistory(s.id());
             long notReturned = history.stream().filter(b -> b.status().equals("borrowed")).count();
-            long delayed = history.stream().filter(BorrowRecord::isDelayed).count();
+            long delayed = history.stream().filter(BorrowManager.BorrowRecordView::isDelayed).count();
 
             System.out.println("\n" + s.username() + ":");
             System.out.println("  Total borrows: " + history.size());

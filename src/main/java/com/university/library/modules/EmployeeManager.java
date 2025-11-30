@@ -23,7 +23,7 @@ public class EmployeeManager {
     }
 
     public Employee addEmployee(String username, String password) {
-        if (employees.stream().anyMatch(e -> e.username.equals(username))) {
+        if (employees.stream().anyMatch(e -> e.username().equals(username))) {
             System.out.println("This username is already taken!");
             return null;
         }
@@ -35,7 +35,7 @@ public class EmployeeManager {
 
     public Employee login(String username, String password) {
         return employees.stream()
-                .filter(e -> e.username.equals(username) && e.password.equals(password))
+                .filter(e -> e.username().equals(username) && e.password().equals(password))
                 .findFirst().orElse(null);
     }
 
@@ -44,7 +44,7 @@ public class EmployeeManager {
         System.out.println("\n--- Change Password ---");
         System.out.print("Current password: ");
         String current = scanner.nextLine();
-        if (!current.equals(employee.password)) {
+        if (!current.equals(employee.password())) {
             System.out.println("Current password is incorrect!");
             return false;
         }
@@ -56,7 +56,12 @@ public class EmployeeManager {
             System.out.println("Passwords do not match!");
             return false;
         }
-        employee.password = np;
+        // Create new Employee with updated password and replace in list
+        Employee updatedEmployee = new Employee(employee.id(), employee.username(), np, employee.addedDate());
+        int index = employees.indexOf(employee);
+        if (index >= 0) {
+            employees.set(index, updatedEmployee);
+        }
         System.out.println("Password changed successfully!");
         return true;
     }
@@ -212,11 +217,11 @@ public class EmployeeManager {
     }
 
     public String getCurrentUsername(Object employee) {
-        return employee instanceof Employee e ? e.username : "";
+        return employee instanceof Employee e ? e.username() : "";
     }
 
     public List<Employee> getAllEmployees() { return employees; }
-    public Employee getEmployeeById(int id) { return employees.stream().filter(e -> e.id == id).findFirst().orElse(null); }
+    public Employee getEmployeeById(int id) { return employees.stream().filter(e -> e.id() == id).findFirst().orElse(null); }
 
     public record Employee(int id, String username, String password, LocalDate addedDate) {}
 }
