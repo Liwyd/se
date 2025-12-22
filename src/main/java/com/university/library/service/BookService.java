@@ -10,6 +10,7 @@ import com.university.library.exception.ResourceNotFoundException;
 import com.university.library.repository.BookRepository;
 import com.university.library.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,11 +53,12 @@ public class BookService {
         return mapToResponse(book);
     }
     
-    public List<BookResponse> searchBooks(BookSearchRequest request) {
+    public List<BookResponse> searchBooks(BookSearchRequest request, Pageable pageable) {
         List<Book> books = bookRepository.searchBooks(
                 request.getTitle(),
                 request.getYear(),
-                request.getAuthor()
+                request.getAuthor(),
+                pageable
         );
         return books.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
@@ -110,4 +112,3 @@ public class BookService {
                 .build();
     }
 }
-

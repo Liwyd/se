@@ -1,6 +1,7 @@
 package com.university.library.repository;
 
 import com.university.library.entity.Book;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,10 +22,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     
     @Query("SELECT b FROM Book b WHERE " +
            "(:title IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
-           "(:year IS NULL OR CAST(b.publicationYear AS string) LIKE CONCAT('%', :year, '%')) AND " +
+           "(:year IS NULL OR b.publicationYear = :year) AND " +
            "(:author IS NULL OR LOWER(b.author) LIKE LOWER(CONCAT('%', :author, '%')))")
     List<Book> searchBooks(@Param("title") String title, 
                           @Param("year") String year, 
-                          @Param("author") String author);
+                          @Param("author") String author,
+                          Pageable pageable);
 }
 

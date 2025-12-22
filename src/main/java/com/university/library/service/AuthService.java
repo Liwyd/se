@@ -7,6 +7,7 @@ import com.university.library.entity.Admin;
 import com.university.library.entity.Employee;
 import com.university.library.entity.Student;
 import com.university.library.exception.BadRequestException;
+import com.university.library.exception.ResourceNotFoundException;
 import com.university.library.exception.UnauthorizedException;
 import com.university.library.repository.AdminRepository;
 import com.university.library.repository.EmployeeRepository;
@@ -16,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -100,5 +103,49 @@ public class AuthService {
         
         throw new UnauthorizedException("Invalid username or password");
     }
+    
+    public String getRoleFromToken(String token) {
+        return tokenProvider.getRoleFromToken(token);
+    }
+    
+    public Long getUserIdFromToken(String token) {
+        return tokenProvider.getUserIdFromToken(token);
+    }
+    
+    public boolean validatePasswordChange(Long userId, String role, String currentPassword) {
+        switch (role) {
+            case "EMPLOYEE":
+                Employee employee = employeeRepository.findById(userId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+                return passwordEncoder.matches(currentPassword, employee.getPassword());
+            case "ADMIN":
+                Admin admin = adminRepository.findById(userId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Admin not found"));
+                return passwordEncoder.matches(currentPassword, admin.getPassword());
+            default:
+                throw new UnauthorizedException("Only employees and admins can change password");
+        }
+    }
+    
+    @Transactional
+    public void updatePassword(Long userId, String role, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        
+        switch (role) {
+            case "EMPLOYEE":
+                Employee employee = employeeRepository.findById(userId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+                employee.setPassword(encodedPassword);
+                employeeRepository.save(employee);
+                break;
+            case "ADMIN":
+                Admin admin = adminRepository.findById(userId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Admin not found"));
+                admin.setPassword(encodedPassword);
+                adminRepository.save(admin);
+                break;
+            default:
+                throw new UnauthorizedException("Only employees and admins can change password");
+        }
+    }
 }
-

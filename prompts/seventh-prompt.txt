@@ -1,0 +1,121 @@
+تمرین:
+طراحی لیست API‌های RESTful زیر به عنوان نسخه اولیه سیستم مدیریت کتابخانه دانشگاه
+
+API های سیستم مدیریت کتابخانه (نسخه اولیه)
+
+شروع تمام apiها از مسیر زیر خواهد بود
+/api
+
+
+۱. احراز هویت (Authentication)
+۱.۱. ثبت‌نام دانشجو
+/api/auth/register
+POST
+
+۱.۲. ورود به سیستم (همه کاربران)
+POST
+/api/auth/login
+
+۱.۳. تغییر رمزعبور (کارمند/مدیر)
+/api/auth/change-password 
+POST
+
+---
+
+۲. کتاب‌ها (Books)
+۲.۱. دریافت لیست کتاب‌ها (با قابلیت جستجو و فیلتر)
+/api/books
+GET
+
+۲.۲. دریافت جزئیات یک کتاب
+/api/books/{id}
+GET
+
+۲.۳. ایجاد کتاب جدید (کارمند)
+/api/books
+POST
+
+۲.۴. به‌روزرسانی اطلاعات کتاب (کارمند)
+/api/books/{id}
+PUT
+
+۲.۵. جستجوی پیشرفته کتاب (بر اساس عنوان، نویسنده، سال)
+/api/books/search
+GET
+
+---
+
+.۳ امانت کتاب (Borrowing)
+۳.۱. ثبت درخواست امانت جدید (دانشجو)
+/api/borrow/request
+POST
+
+۳.۲. مشاهده درخواست‌های در انتظار تایید (کارمند)
+/api/borrow/requests/pending
+GET
+
+۳.۳. تایید درخواست امانت (کارمند)
+/api/borrow/requests/{id}/approve
+PUT یا POST
+
+- رد درخواست امانت (کارمند)
+/api/borrow/requests/{id}/reject
+PUT یا POST
+
+۳.۴. ثبت بازگرداندن کتاب (کارمند)
+/api/borrow/{id}/return
+PUT یا POST
+
+---
+
+ ۴. مدیریت دانشجویان (Students)
+۴.۱. دریافت پروفایل دانشجو
+/api/students/{id}
+GET
+
+۴.۲. فعال/غیرفعال کردن دانشجو (کارمند)
+/api/students/{id}/status
+PUT یا POST
+
+۴.۳. مشاهده تاریخچه امانت‌های دانشجو (کارمند)
+/api/students/{id}/borrow-history
+GET
+
+---
+
+۵. گزارش‌ها و آمار (Reports & Statistics)
+
+۵.۱. آمار خلاصه (تعداد دانشجو، کتاب، امانت) (مهمان/کارمند/مدیر)
+/api/stats/summary
+GET
+
+۵.۲. آمار پیشرفته امانت‌ها (مدیر)
+/api/stats/borrows
+GET
+
+۵.۳. گزارش عملکرد کارمند (مدیر)
+/api/stats/employees/{id}/performance
+GET
+
+۵.۴. لیست دانشجویان با بیشترین تاخیر (مدیر)
+/api/stats/top-delayed
+GET
+
+---
+
+۶. مدیریت کارکنان (Employees) - فقط مدیر
+۶.۱. ایجاد حساب کارمند جدید
+/api/admin/employees
+POST
+
+۶.۲. لیست کارکنان
+/api/admin/employees
+GET
+
+---
+
+نکات مهم:
+*   برای جستجو و فیلتر (مثلاً در /api/books) از Query Parameters استفاده شود.  
+    مثال: /api/books?title=Java&author=Bloch
+*   pagination باشد.
+*   همه پاسخ‌ها در قالب استاندارد JSON باشند.

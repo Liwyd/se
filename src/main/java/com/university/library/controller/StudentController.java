@@ -1,10 +1,8 @@
 package com.university.library.controller;
 
-import com.university.library.dto.response.StudentReportResponse;
 import com.university.library.dto.response.StudentResponse;
 import com.university.library.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,63 +15,32 @@ import java.util.List;
 @RequestMapping("/api/students")
 @RequiredArgsConstructor
 @Tag(name = "Students", description = "Student management APIs")
-@SecurityRequirement(name = "bearerAuth")
 public class StudentController {
-    
+
     private final StudentService studentService;
-    
-    @GetMapping("/public/count")
-    @Operation(summary = "Get student count (Public)")
-    public ResponseEntity<StudentCountResponse> getStudentCount() {
-        List<StudentResponse> all = studentService.getAllStudents();
-        List<StudentResponse> active = studentService.getActiveStudents();
-        return ResponseEntity.ok(new StudentCountResponse(
-                all.size(),
-                active.size(),
-                all.size() - active.size()
-        ));
-    }
-    
-    @GetMapping
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    @Operation(summary = "Get all students")
-    public ResponseEntity<List<StudentResponse>> getAllStudents() {
-        List<StudentResponse> students = studentService.getAllStudents();
-        return ResponseEntity.ok(students);
-    }
-    
-    @GetMapping("/active")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    @Operation(summary = "Get active students")
-    public ResponseEntity<List<StudentResponse>> getActiveStudents() {
-        List<StudentResponse> students = studentService.getActiveStudents();
-        return ResponseEntity.ok(students);
-    }
-    
+
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    @Operation(summary = "Get student by ID")
-    public ResponseEntity<StudentResponse> getStudentById(@PathVariable Long id) {
-        StudentResponse student = studentService.getStudentById(id);
-        return ResponseEntity.ok(student);
+    @PreAuthorize("hasRole('STUDENT') or hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    @Operation(summary = "Get student profile")
+    public ResponseEntity<StudentResponse> getStudent(@PathVariable Long id) {
+        StudentResponse response = studentService.getStudentById(id);
+        return ResponseEntity.ok(response);
     }
-    
-    @GetMapping("/{id}/report")
+
+    @PostMapping("/{id}/status")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    @Operation(summary = "Get student report")
-    public ResponseEntity<StudentReportResponse> getStudentReport(@PathVariable Long id) {
-        StudentReportResponse report = studentService.getStudentReport(id);
-        return ResponseEntity.ok(report);
-    }
-    
-    @PatchMapping("/{id}/toggle-status")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    @Operation(summary = "Toggle student active status")
+    @Operation(summary = "Toggle student status (active/inactive)")
     public ResponseEntity<StudentResponse> toggleStudentStatus(@PathVariable Long id) {
-        StudentResponse student = studentService.toggleStudentStatus(id);
-        return ResponseEntity.ok(student);
+        StudentResponse response = studentService.toggleStudentStatus(id);
+        return ResponseEntity.ok(response);
     }
-    
-    private record StudentCountResponse(long total, long active, long inactive) {}
+
+    @GetMapping("/{id}/borrow-history")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    @Operation(summary = "Get student borrow history")
+    public ResponseEntity<Object> getStudentBorrowHistory(@PathVariable Long id) {
+        Object response = studentService.getStudentReport(id);
+        return ResponseEntity.ok(response);
+    }
 }
 
